@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% load django_bootstrap5 %}
+{% block title %}
+  Все документы
+{% endblock %}
+{% block content %}
+<div class="container mx-auto mt-4">
+  <form class="row justify-content-center mb-5" id="spinner-example-filters" method="get" action="{% url 'archive:index' %}">
+    <p class="text-center fa-lg fw-bold">Поиск по заголовку или описанию:</p>
+    <div class="col-md-3 mt-3 text-center">
+      <div class="form-outline" data-mdb-input-init>
+        <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" name="q" value="{{ q }}"/>
+      </div>
+    </div>
+    <p class="text-center fa-lg fw-bold">Фильтрация по дате:</p>
+    <div class="col-md-3 mt-3 text-center">
+      <div class="form-outline" data-mdb-input-init>
+        <input type="date" id="typeNumber" class="form-control" name="from" value="{{ date_from }}"/>
+        <label class="form-label" for="typeNumber"></label>
+      </div>
+    </div>
+    <div class="col-md-3 mt-3 text-center">
+      <div class="form-outline" data-mdb-input-init>
+        <input type="date" id="typeNumber2" class="form-control" name="to" value="{{ date_to }}"/>
+      </div>
+    </div>
+    {% bootstrap_button button_type="submit" content="Поиск" %}
+  </form>
+  <div class="row">
+    {% for document in page_obj %}
+      <div class="mb-5" style="width: auto">
+        {% include "includes/document_card.html" %}
+      </div>
+      {% empty %}
+        <div class="mb-5" style="width: auto">
+          <h1>Записей не найдено</h1>
+        </div>
+    {% endfor %}
+  </div>
+</div>
+
+  {% include "includes/paginator.html" %}
+{% endblock %}
